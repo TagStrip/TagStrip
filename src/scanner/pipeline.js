@@ -3,27 +3,25 @@
  * Coordinates image preprocessing, tag detection, and multi-frame voting
  */
 
-import { toGrayscale, binarizeOtsu } from './binarize.js';
-import { searchBands } from './locator.js';
+import { toGrayscale } from './binarize.js';
+import { searchBandsGrayscale } from './locator.js';
 import { decodeBits } from '../core/decoder.js';
 
 /**
  * Process a single frame and attempt tag detection
- * 
+ *
  * @param {ImageData} imageData - Frame from video/canvas
  * @returns {Object} - { success: boolean, boxId?: number, variant?: string, reason?: string }
  */
 export function processFrame(imageData) {
   const { width, height } = imageData;
-  
-  // Convert to grayscale
+
+  // Convert to grayscale (keep full luminance — do NOT binarise globally here;
+  // the locator applies a local threshold per band)
   const grayscale = toGrayscale(imageData);
-  
-  // Binarize using Otsu's method
-  const { binary } = binarizeOtsu(grayscale);
-  
-  // Search for tag in horizontal bands
-  const detected = searchBands(binary, width, height);
+
+  // Search for tag in horizontal bands using the grayscale signal directly
+  const detected = searchBandsGrayscale(grayscale, width, height);
   
   if (!detected) {
     return { success: false, reason: 'NO_GUARD_FOUND' };
