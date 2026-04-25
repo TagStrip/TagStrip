@@ -2,7 +2,7 @@
 
 This specification defines a custom, one‑dimensional, single‑line “LetraTag Code” symbology that:
 
-- Can be printed on a DYMO LetraTag 200B (or similar) as plain text. [help.dymo](https://help.dymo.com/s/article/How-to-use-my-LetraTag-labelmaker)
+- Can be printed on a DYMO LetraTag 200B (or similar) as plain text.
 - Encodes a small integer "ID” into a short sequence of high‑contrast characters.  
 - Can be decoded from a smartphone camera stream using simple image processing (no general OCR).  
 - Provides two formats:

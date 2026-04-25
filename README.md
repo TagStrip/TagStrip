@@ -1,265 +1,296 @@
 # TagStrip
 
-A custom one-dimensional barcode symbology for DYMO LetraTag label makers, with camera-based scanning support.
+A JavaScript specification and library for encoding and decoding DYMO LetraTag strip codes. TagStrip can both **scan** tags using your device camera and **generate** new tags programmatically.
 
 ## Overview
 
-TagStrip is a lightweight, printable encoding system designed for:
-- Printing on DYMO LetraTag 200B (and similar) label makers
-- Encoding small integer IDs (up to 1024 or 65536)
-- Camera-based decoding using smartphones or webcams
-- Error detection via CRC
+TagStrip implements the encoding and decoding logic for DYMO LetraTag strip codes, consisting of guard patterns, orientation bits, payload (box ID), and CRC error-checking.
 
-Two variants are available:
-- **Short tag**: 20 bits total, 10-bit payload (1024 IDs)
-- **Long tag**: 28 bits total, 16-bit payload (65536 IDs)
+### Tag Variants
 
-## Installation
+| Variant | Total Bits | Payload Bits | ID Range | Description |
+|---------|------------|--------------|----------|-------------|
+| Short   | 20 bits    | 10 bits      | 0-1023   | For smaller deployments |
+| Long    | 28 bits    | 16 bits      | 0-65535  | For larger-scale use |
 
-```bash
-npm install
+Each tag contains:
+- **Left Guard** - Sync pattern for detection
+- **Orientation** - 2 bits to identify variant and scan direction
+- **Payload** - The actual box ID
+- **CRC** - Error detection bits
+- **Right Guard** - End marker
+
+## Quick Start
+
+### CDN (Script Tag)
+
+The CDN provides core encoding/decoding functions:
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/tagstrip/tagstrip/dist/tagstrip.umd.js"></script>
+
+<script>
+  // Encode a box ID into a tag string
+  const tag = TagStrip.encode(42, 'short');
+  console.log(tag); // ###.#####.#.##
+</script>
 ```
 
-## Build
+### NPM - Scan Tags with Camera
+
+The main feature: scan and decode DYMO LetraTag strips using your camera:
 
 ```bash
-npm run build
+npm install @lelenaic/tagstrip
 ```
-
-Produces three output formats:
-- `dist/tagstrip.js` - ESM (for modern bundlers)
-- `dist/tagstrip.cjs` - CommonJS (for Node.js)
-- `dist/tagstrip.umd.js` - UMD (for browser `<script>` tag)
-
-## Demo (Mobile Scanner & Generator)
-
-### Production Demo
-
-Test the final built version:
-
-```bash
-# Build and start demo server
-npm run demo
-```
-
-Then open the displayed network URL on your mobile device (e.g., `http://192.168.x.x:8080`).
-
-### Development Mode (Hot Reload)
-
-For active development with instant updates:
-
-```bash
-# Start dev server with HMR
-npm run dev
-```
-
-Access on mobile via network URL (e.g., `http://192.168.x.x:3000`). Code changes in `src/` auto-reload on save - perfect for testing scanner tweaks on mobile while coding on PC.
-
-See [DEV_GUIDE.md](DEV_GUIDE.md) for development workflow.
-
-## Testing
-
-```bash
-# Run tests once
-npm test
-
-# Watch mode
-npm run test:watch
-
-# With coverage
-npm run test:coverage
-```
-
-## Usage
-
-### Encoding
 
 ```javascript
-import { encode } from 'TagStrip';
+import { createScanner } from '@lelenaic/tagstrip/scanner/pipeline.js';
 
-// Encode a short tag (ID 0-1023)
-const shortTag = encode(42, 'short');
-console.log(shortTag); // "###.#.......##.#.##"
-
-// Encode a long tag (ID 0-65535)
-const longTag = encode(1024, 'long');
-console.log(longTag); // "####.........#......##.###"
-
-// Custom characters
-const customTag = encode(42, 'short', {
-  darkChar: '#',
-  lightChar: '·'
-});
-```
-
-### Decoding (Bitstream)
-
-```javascript
-import { decodeBits } from 'TagStrip';
-
-// Convert string to bit array
-const bits = Uint8Array.from(tagString, c => c === '#' ? 1 : 0);
-
-// Decode
-const result = decodeBits(bits);
-if (result.success) {
-  console.log(`Decoded ID: ${result.boxId}`);
-  console.log(`Variant: ${result.variant}`);
-} else {
-  console.log(`Decode failed: ${result.reason}`);
-}
-```
-
-### Scanner (Browser Only)
-
-```javascript
-import { createScanner } from './src/scanner/pipeline.js';
-
-// Get video stream
-const video = document.querySelector('video');
+// Get video element with camera stream
+const video = document.getElementById('video');
 const stream = await navigator.mediaDevices.getUserMedia({
   video: { facingMode: 'environment' }
 });
 video.srcObject = stream;
 
-// Create scanner
+// Create scanner - calls callback with decoded results
 const scanner = createScanner(video, (result) => {
-  console.log(`Scanned ID: ${result.boxId}`);
-  console.log(`Variant: ${result.variant}`);
-  console.log(`Confidence: ${result.confidence}`);
+  if (result.success) {
+    console.log(`Detected ${result.variant} tag: ID ${result.boxId}`);
+  }
 });
 
-// Start/stop
 scanner.start();
-// ... later
+
+// Stop when done
 scanner.stop();
+stream.getTracks().forEach(t => t.stop());
 ```
+
+For complete working examples, see [`demo.html`](demo.html).
 
 ## API Reference
 
-### Core Functions
+### encode(boxId, variant, options)
 
-#### `encode(boxId, variant, options)`
-
-Encode an ID into a TagStrip string.
+Encodes a numeric ID into a TagStrip code string.
 
 **Parameters:**
-- `boxId` (number): ID to encode (0-1023 for short, 0-65535 for long)
-- `variant` (string): `'short'` or `'long'`
-- `options` (object, optional):
-  - `darkChar` (string): Character for bit 1 (default: `'#'`)
-  - `lightChar` (string): Character for bit 0 (default: `'.'`)
 
-**Returns:** String representation of the tag
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `boxId` | number | Yes | - | The ID to encode (integer) |
+| `variant` | string | No | `'long'` | `'short'` (0-1023) or `'long'` (0-65535) |
+| `options` | object | No | `{}` | Encoding options |
 
-#### `decodeBits(bits)`
+**Options:**
 
-Decode a TagStrip bitstream.
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `darkChar` | string | `'#'` | Character representing bit 1 |
+| `lightChar` | string | `'.'` | Character representing bit 0 |
+
+**Returns:** `string` - The encoded TagStrip code
+
+**Example:**
+```javascript
+// Short tag (10-bit payload, 0-1023)
+const shortTag = encode(42, 'short');
+// Result: ###.#####.#.##
+
+// Long tag (16-bit payload, 0-65535)
+const longTag = encode(1000, 'long');
+// Result: ###.##########.#.###
+
+// Custom characters
+const customTag = encode(42, 'short', { darkChar: '1', lightChar: '0' });
+// Result: 1110111110010111
+```
+
+### decodeBits(bits)
+
+Decodes a bit array back to a box ID.
 
 **Parameters:**
-- `bits` (Uint8Array): Array of 0/1 values
 
-**Returns:** Object with:
-- `success` (boolean): Whether decode succeeded
-- `boxId` (number): Decoded ID (if success)
-- `variant` (string): `'short'` or `'long'` (if success)
-- `reason` (string): Error reason (if failed)
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `bits` | Uint8Array | Yes | Array of 0/1 values |
 
-### Scanner Functions
+**Returns:** `Object` with the following structure:
+- `success` (boolean) - Whether decoding succeeded
+- `boxId` (number) - The decoded ID (if success)
+- `variant` (string) - `'short'` or `'long'` (if success)
+- `reason` (string) - Failure reason (if not success)
 
-#### `createScanner(videoElement, onResult)`
+**Possible failure reasons:**
+- `EMPTY_BITSTREAM` - Input was empty
+- `INVALID_LENGTH` - Bit count didn't match either variant
+- `NO_GUARD_FOUND` - Guard pattern not detected
+- `CRC_MISMATCH` - CRC check failed
 
-Create a scanner instance for real-time tag detection.
+**Example:**
+```javascript
+// Decode from tag string
+const bits = Uint8Array.from('###.#####.#.##', c => c === '#' ? 1 : 0);
+const result = decodeBits(bits);
+// { success: true, boxId: 42, variant: 'short' }
 
-**Parameters:**
-- `videoElement` (HTMLVideoElement): Video element with camera stream
-- `onResult` (function): Callback for scan results
-
-**Returns:** Scanner instance with `start()` and `stop()` methods
-
-## Project Structure
-
-```
-TagStrip/
-├── src/
-│   ├── core/
-│   │   ├── constants.js    # Fixed patterns and polynomials
-│   │   ├── crc.js          # CRC-3 and CRC-4 algorithms
-│   │   ├── encoder.js      # Bitstream builder and text encoder
-│   │   └── decoder.js      # Bitstream validator and ID extractor
-│   ├── scanner/
-│   │   ├── binarize.js     # Adaptive thresholding (Otsu)
-│   │   ├── project.js      # 1D projection from image band
-│   │   ├── locator.js      # Tag region detection
-│   │   ├── pipeline.js     # Frame capture and decoding
-│   │   └── worker.js       # OffscreenCanvas Web Worker
-│   └── index.js            # Public API surface
-├── tests/
-│   ├── core/
-│   │   ├── crc.test.js
-│   │   ├── encoder.test.js
-│   │   └── decoder.test.js
-│   └── scanner/
-│       └── pipeline.test.js
-└── dist/                   # Built output (gitignored)
+// Handle failure
+const failed = decodeBits(new Uint8Array([0, 1, 0]));
+if (!failed.success) {
+  console.log(failed.reason); // 'NO_GUARD_FOUND'
+}
 ```
 
-## Technical Details
+### Constants
 
-### Short Tag Format (20 bits)
+| Constant | Value | Description |
+|----------|-------|-------------|
+| `SHORT_MAX_ID` | 1023 | Maximum ID for short tags |
+| `LONG_MAX_ID` | 65535 | Maximum ID for long tags |
 
-```
-[111][01][10-bit payload][3-bit CRC][11]
- ^    ^         ^              ^      ^
- |    |         |              |      Right Guard
- |    |         |              CRC-3 (polynomial 0b1011)
- |    |         Payload (ID 0-1023)
- |    Orientation (01 = short)
- Left Guard
-```
+**Example:**
+```javascript
+import { SHORT_MAX_ID, LONG_MAX_ID } from '@lelenaic/tagstrip';
 
-### Long Tag Format (28 bits)
-
-```
-[111][10][16-bit payload][4-bit CRC][111]
- ^    ^         ^              ^      ^
- |    |         |              |      Right Guard
- |    |         |              CRC-4 (polynomial 0b10011)
- |    |         Payload (ID 0-65535)
- |    Orientation (10 = long)
- Left Guard
+console.log(SHORT_MAX_ID); // 1023
+console.log(LONG_MAX_ID);  // 65535
 ```
 
-### Error Detection
+### Scanner (Browser Only, NPM Only)
 
-- CRC-3 for short tags (detects single-bit errors)
-- CRC-4 for long tags (stronger error detection)
-- Guard patterns for start/end detection
-- Orientation bits to distinguish variants and handle reversed scans
+The scanner module provides camera-based tag detection using multi-frame voting for robust results. Note: Scanner is only available via NPM/esbuild bundling, not via CDN script tag.
 
-### Scanner Pipeline
+```javascript
+// NPM/ES Module only
+import { createScanner } from '@lelenaic/tagstrip/scanner/pipeline.js';
 
-1. **Frame Capture**: Extract frame from video stream
-2. **Grayscale Conversion**: Convert RGBA to luminance
-3. **Adaptive Binarization**: Otsu's method for threshold
-4. **Band Search**: Horizontal projection and guard detection
-5. **Bit Sampling**: Center-of-mass resampling with ±30% window
-6. **CRC Validation**: Verify payload integrity
-7. **Multi-frame Voting**: 3-5 frame consensus for robust detection
+// Get video element with camera stream
+const video = document.getElementById('my-video');
 
-## Performance
+// Create scanner instance
+const scanner = createScanner(video, (result) => {
+  if (result.success) {
+    console.log(`Detected: ${result.variant} tag, ID: ${result.boxId}`);
+    console.log(`Confidence: ${(result.confidence * 100).toFixed(1)}%`);
+  }
+});
 
-- `encode()`: < 1ms
-- `decodeBits()`: < 1ms
-- Full frame processing (1080p): < 80ms
-- End-to-end scan latency (3-frame vote): < 1s
+// Start scanning
+scanner.start();
 
-## License
+// Stop scanning when done
+scanner.stop();
+```
 
-See LICENSE file for details.
+**Scanner Features:**
+- Multi-frame voting (5 frames, 60% consensus required)
+- Automatic orientation detection (reads left-to-right or right-to-left)
+- Supports both short and long tag variants
+- Returns confidence score based on voting agreement
 
-## References
+#### VotingBuffer Class
 
-- [DYMO LetraTag 200B](https://dymo.eu/Dymo-LetraTag-200B-Bluetooth-printer/2172855)
-- [Otsu's Method](https://en.wikipedia.org/wiki/Otsu%27s_method)
-- [CRC Polynomial Codes](https://en.wikipedia.org/wiki/Cyclic_redundancy_check)
+For custom implementations, the `VotingBuffer` class manages the multi-frame consensus logic:
+
+```javascript
+import { VotingBuffer } from '@lelenaic/tagstrip/scanner/pipeline.js';
+
+const buffer = new VotingBuffer(5); // Buffer size
+
+// Add decode results
+buffer.add({ success: true, variant: 'short', boxId: 42 });
+
+// Get consensus result
+const consensus = buffer.getConsensus();
+if (consensus) {
+  console.log(`Winner: ${consensus.boxId} (${consensus.variant})`);
+  console.log(`Confidence: ${consensus.confidence}`);
+}
+
+// Check buffer fill level
+console.log(`Buffer: ${buffer.length}/5`);
+```
+
+## Usage Example
+
+See [`demo.html`](demo.html) for a complete end-user implementation with both scanning and generation functionality. Note that the demo uses direct source imports (`./src/scanner/pipeline.js`) for the scanner since it's not bundled in the UMD export.
+
+### Basic Generation
+
+```javascript
+import { encode, decodeBits, SHORT_MAX_ID, LONG_MAX_ID } from '@lelenaic/tagstrip';
+
+// Generate a short tag
+const tag = encode(123, 'short');
+console.log(tag); // ###.#.######.##
+
+// Generate a long tag
+const tag2 = encode(45678, 'long');
+console.log(tag2); // ###.###########.#.###
+
+// Verify round-trip
+const bits = Uint8Array.from(tag, c => c === '#' ? 1 : 0);
+const decoded = decodeBits(bits);
+console.log(decoded.boxId === 123); // true
+```
+
+### Browser Scanner Integration
+
+```javascript
+import { createScanner } from '@lelenaic/tagstrip/scanner/pipeline.js';
+
+async function startCamera() {
+  const video = document.getElementById('video');
+  
+  // Request camera access
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video: { facingMode: 'environment' }
+  });
+  
+  video.srcObject = stream;
+  
+  // Create scanner with result callback
+  const scanner = createScanner(video, (result) => {
+    if (result.success) {
+      console.log(`Detected ${result.variant} tag: ID ${result.boxId}`);
+    }
+  });
+  
+  scanner.start();
+  
+  // Clean up later
+  return () => {
+    scanner.stop();
+    stream.getTracks().forEach(t => t.stop());
+  };
+}
+```
+
+## Requirements
+
+- **Browser scanning**: HTTPS or localhost required for camera access
+- **Modern browser** with `navigator.mediaDevices.getUserMedia` support
+- ES modules support for import-based usage
+
+## Tag Format
+
+Tags are represented as strings of `#` (dark/1) and `.` (light/0) characters. The structure is:
+
+```
+SHORT TAG (20 bits):
+[LEFT_GUARD 3][ORIENT 2][PAYLOAD 10][CRC 3][RIGHT_GUARD 2]
+      111         01     [10-bit ID]   [3]       11
+
+LONG TAG (28 bits):
+[LEFT_GUARD 3][ORIENT 2][PAYLOAD 16][CRC 4][RIGHT_GUARD 3]
+      111         10     [16-bit ID]   [4]       111
+```
+
+The orientation bits also identify the variant:
+- `01` = Short tag
+- `10` = Long tag
+
+This allows the decoder to automatically detect the tag variant and validate accordingly.
