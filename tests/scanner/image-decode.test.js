@@ -1,9 +1,7 @@
 /**
- * Integration test: read pictures/1.jpg and decode the TagStrip tag.
- * The tag in the photo encodes ID 42 (short variant).
- *
- * This test exercises the full pipeline:
- *   JPEG → grayscale pixel data → binarize → projection → locator → decodeBits
+ * Integration test: validate scanner against real-world photo fixtures.
+ * Each fixture in tests/fixtures/fixtures.json defines a photo to test.
+ * Adding a new test only requires adding the image file and a new fixtures.json entry.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -12,8 +10,10 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const FIXTURES_DIR = resolve(__dirname, '../fixtures');
+const FIXTURES_JSON = resolve(FIXTURES_DIR, 'fixtures.json');
+const PHOTOS_DIR = resolve(FIXTURES_DIR, 'photos');
 
-// ---------- Inline pure-Node JPEG decoder using sharp ----------
 async function loadImageAsRGBA(filePath) {
   const sharp = (await import('sharp')).default;
   const { data, info } = await sharp(filePath)
@@ -23,38 +23,41 @@ async function loadImageAsRGBA(filePath) {
   return { data: new Uint8ClampedArray(data.buffer), width: info.width, height: info.height };
 }
 
-// ---------- Re-use scanner modules (they are pure JS, no DOM) ----------
 import { toGrayscale } from '../../src/scanner/binarize.js';
 import { searchBandsGrayscale } from '../../src/scanner/locator.js';
 import { decodeBits } from '../../src/core/decoder.js';
 
-// ---------- Thin ImageData shim for Node ----------
 function makeImageData(data, width, height) {
   return { data, width, height };
 }
 
-describe('Image decode — pictures/1.jpg', () => {
-  it('reads the JPEG, processes the pipeline, and decodes ID 42', async () => {
-    const imagePath = resolve(__dirname, '../../pictures/1.jpg');
+const fixtures = JSON.parse(readFileSync(FIXTURES_JSON, 'utf-8'));
 
-    // Load image as raw RGBA bytes
+describe('Image decode — photo fixtures', () => {
+  it.each(fixtures.map((f, i) => ({
+    ...f,
+    index: i,
+    testName: `${f.file} (variant: ${f.variant})${f.shouldPass ? '' : ' — negative'}`
+  })))('$testName', async ({ file, expectedId, shouldPass }) => {
+    const imagePath = resolve(PHOTOS_DIR, file);
     const { data, width, height } = await loadImageAsRGBA(imagePath);
     expect(width).toBeGreaterThan(0);
     expect(height).toBeGreaterThan(0);
 
-    // Build a lightweight ImageData-like object
     const imageData = makeImageData(data, width, height);
-
-    // Convert to grayscale
     const grayscale = toGrayscale(imageData);
-
-    // Search for tag in horizontal bands using grayscale directly
     const detected = searchBandsGrayscale(grayscale, width, height);
-    expect(detected, 'tag region should be found in the image').not.toBeNull();
 
-    // Decode the extracted bits
-    const result = decodeBits(detected.bits);
-    expect(result.success, `decodeBits failed: ${result.reason}`).toBe(true);
-    expect(result.boxId).toBe(42);
+    if (shouldPass) {
+      expect(detected, `${file}: tag region should be found`).not.toBeNull();
+      const result = decodeBits(detected.bits);
+      expect(result.success, `${file}: decodeBits failed: ${result.reason}`).toBe(true);
+      expect(result.boxId).toBe(expectedId);
+    } else {
+      if (detected) {
+        const result = decodeBits(detected.bits);
+        expect(result.success, `${file}: decodeBits should fail for this fixture`).toBe(false);
+      }
+    }
   });
 });

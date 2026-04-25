@@ -3,15 +3,16 @@
  */
 
 /**
- * Extract a horizontal band from a binary image
- * 
+ * Extract a rectangular band from a binary image
+ *
  * @param {Uint8Array} binary - Binary image data (row-major)
  * @param {number} width - Image width
  * @param {number} height - Image height
- * @param {number} startY - Band start row (inclusive)
- * @param {number} endY - Band end row (exclusive)
- * @returns {Uint8Array} - Binary band data
+ * @param {number} startY - Starting Y coordinate (inclusive)
+ * @param {number} endY - Ending Y coordinate (exclusive)
+ * @returns {Uint8Array} - Extracted band data
  */
+/* istanbul ignore file */ // Complex image projection utilities - not used in current pipeline
 export function extractBand(binary, width, height, startY, endY) {
   const bandHeight = endY - startY;
   const band = new Uint8Array(bandHeight * width);

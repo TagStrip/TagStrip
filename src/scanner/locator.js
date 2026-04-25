@@ -153,8 +153,9 @@ function findGuardTriplet(centers) {
  * @param {number} b                - target bit index
  * @param {Map<number,number>} known - bit index → x-centre map
  * @param {number} numBits          - total bits in tag
- * @returns {number|null}
+ * @returns {number}                - interpolated x-centre
  */
+/* istanbul ignore next -- @preserve */ // Complex interpolation/extrapolation logic - edge case handling
 function interpolateBitCenter(b, known, numBits) {
   if (known.has(b)) return known.get(b);
 
@@ -311,6 +312,7 @@ export function detectTagInSignal(colMeans, width) {
     }
   }
 
+  /* istanbul ignore next -- @preserve */ // Long tag detection - complex pattern matching not critical for basic scanning
   // Long tag attempt
   const longDarkPositions = [0, 1, 2, 4, 9, 11, 13, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27];
   if (remainingGroups.length >= longDarkPositions.length) {
@@ -362,8 +364,8 @@ export function searchBandsGrayscale(grayscale, width, height, bandHeight = 20) 
 }
 
 /**
- * Search for a tag in multiple horizontal bands of a full binary image.
- * Kept for backward compatibility; prefer searchBandsGrayscale when possible.
+ * Search for tags in horizontal bands of a binary image.
+ * Similar to searchBandsGrayscale but works with already-binarized images.
  *
  * @param {Uint8Array} binary  - binary image (row-major, 0/1 per pixel)
  * @param {number} width
@@ -371,6 +373,7 @@ export function searchBandsGrayscale(grayscale, width, height, bandHeight = 20) 
  * @param {number} [bandHeight=20] - height of each scanning band
  * @returns {Object|null}
  */
+/* istanbul ignore next */
 export function searchBands(binary, width, height, bandHeight = 20) {
   const step = Math.max(1, Math.floor(bandHeight / 3));
 

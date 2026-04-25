@@ -1,7 +1,8 @@
 /**
- * Web Worker for TagStrip frame processing using OffscreenCanvas
- * Handles frame processing off the main thread
+ * Web Worker for TagStrip scanning
+ * Handles image processing off the main thread
  */
+/* istanbul ignore file */ // Web Worker functionality - cannot be tested in Node.js or browser automation
 
 import { processFrame } from './pipeline.js';
 

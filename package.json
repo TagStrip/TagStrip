@@ -14,19 +14,27 @@
   "scripts": {
     "build": "vite build",
     "test": "vitest run",
+    "test:scanner": "vitest run --config vitest.node.config.js",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "npm run test:core-coverage && npm run test:scanner-coverage && npm run test:e2e-coverage && npx nyc merge coverage-reports/browser coverage-reports/merged/browser.json && npx nyc merge coverage-reports/node coverage-reports/merged/node.json && npx nyc merge coverage-reports/browser-e2e coverage-reports/merged/browser-e2e.json && npx nyc merge coverage-reports/merged --out coverage-reports/merged/coverage.json && npx nyc report --temp-dir coverage-reports/merged --reporter=text --reporter=html --report-dir coverage-reports/merged",
     "serve": "node serve.js",
     "serve:https": "node generate-ssl.js && node serve.js",
     "demo": "npm run build && node generate-ssl.js && node serve.js",
-    "dev": "node generate-ssl.js && vite --config vite.dev.config.js"
+    "dev": "node generate-ssl.js && vite --config vite.dev.config.js",
+    "test:browser": "vitest --config=vitest.browser.config.js",
+    "test:core-coverage": "vitest run --coverage",
+    "test:scanner-coverage": "vitest run --config vitest.node.config.js --coverage",
+    "test:e2e-coverage": "vitest run --config vitest.browser-e2e.config.js --coverage"
   },
   "devDependencies": {
-    "@vitest/coverage-istanbul": "^3.2.4",
+    "@vitest/browser-webdriverio": "^4.1.5",
+    "@vitest/coverage-istanbul": "^4.1.5",
     "concurrently": "^9.2.1",
     "jsdom": "^29.0.2",
+    "nyc": "^18.0.0",
     "sharp": "^0.34.5",
     "vite": "^6.0.0",
-    "vitest": "^3.0.0"
+    "vitest": "^4.1.5",
+    "webdriverio": "^9.27.0"
   }
 }

@@ -1,0 +1,9 @@
+[
+  {
+    "file": "1.jpg",
+    "expectedId": 42,
+    "variant": "short",
+    "conditions": ["indoor", "natural light"],
+    "shouldPass": true
+  }
+]
