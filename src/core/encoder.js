@@ -62,7 +62,8 @@ export function encode(boxId, variant = 'long', options = {}) {
   // 5. RIGHT_GUARD
   bits.push(...config.RIGHT_GUARD);
   
-  // Verify total length
+   // Verify total length
+  /* istanbul ignore next */ // Unreachable: bits array is built correctly above
   if (bits.length !== config.TOTAL_BITS) {
     throw new Error(`Internal error: expected ${config.TOTAL_BITS} bits, got ${bits.length}`);
   }

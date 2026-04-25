@@ -53,9 +53,9 @@ For active development with instant updates:
 npm run dev
 ```
 
-Access on mobile via network URL (e.g., `http://192.168.x.x:3000/demo.html`). Code changes in `src/` auto-reload on save - perfect for testing scanner tweaks on mobile while coding on PC.
+Access on mobile via network URL (e.g., `http://192.168.x.x:3000`). Code changes in `src/` auto-reload on save - perfect for testing scanner tweaks on mobile while coding on PC.
 
-See [DEMO_INSTRUCTIONS.md](DEMO_INSTRUCTIONS.md) for usage guide and [DEV_GUIDE.md](DEV_GUIDE.md) for development workflow.
+See [DEV_GUIDE.md](DEV_GUIDE.md) for development workflow.
 
 ## Testing
 
@@ -87,7 +87,7 @@ console.log(longTag); // "####.........#......##.###"
 
 // Custom characters
 const customTag = encode(42, 'short', {
-  darkChar: '■',
+  darkChar: '#',
   lightChar: '·'
 });
 ```

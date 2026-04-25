@@ -4,11 +4,18 @@ import { decodeBits } from '../../src/core/decoder.js';
 import { SHORT_MAX_ID, LONG_MAX_ID, SHORT_TAG, LONG_TAG } from '../../src/core/constants.js';
 
 describe('encode — short tag', () => {
-  it('encodes ID 0', () => {
+  it('encodes ID 0 with explicit short variant', () => {
     const str = encode(0, 'short');
     expect(str).toBeDefined();
     expect(str.length).toBe(SHORT_TAG.TOTAL_BITS);
     expect(str.startsWith('###.#')).toBe(true); // LEFT_GUARD + ORIENT = 11101
+  });
+
+  it('uses default long variant when not specified', () => {
+    const str = encode(0); // Uses default 'long' variant
+    expect(str).toBeDefined();
+    expect(str.length).toBe(LONG_TAG.TOTAL_BITS);
+    expect(str.startsWith('####.')).toBe(true); // LEFT_GUARD + ORIENT = 11110 for long
   });
   
   it('encodes ID 1', () => {
@@ -40,12 +47,20 @@ describe('encode — short tag', () => {
   it('throws on non-integer ID', () => {
     expect(() => encode(3.14, 'short')).toThrow();
   });
-  
+
+  it('throws on invalid variant', () => {
+    expect(() => encode(42, 'invalid')).toThrow('Invalid variant: invalid. Must be \'short\' or \'long\'.');
+  });
+
   it('supports custom characters', () => {
     const str = encode(0, 'short', { darkChar: '■', lightChar: '·' });
     expect(str).toBeDefined();
     expect(str.includes('#')).toBe(false);
     expect(str.includes('.')).toBe(false);
+  });
+
+  it('stringToBits throws on unexpected character', () => {
+    expect(() => stringToBits('#.#X#')).toThrow('Unexpected character \'X\' at position 3');
   });
 });
 

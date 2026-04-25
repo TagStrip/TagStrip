@@ -18,8 +18,8 @@ This starts a Vite development server with:
 
 The server displays URLs like:
 ```
-📱 Local:   http://localhost:3000/demo.html
-📱 Network: http://192.168.0.181:3000/demo.html
+📱 Local:   http://localhost:3000
+📱 Network: http://192.168.0.181:3000
 ```
 
 - **Local URL**: Access from the same machine (PC/laptop)
@@ -34,7 +34,7 @@ The server displays URLs like:
 
 2. **Open on mobile**:
    - Connect mobile to same WiFi as PC
-   - Open the Network URL (e.g., `http://192.168.0.181:3000/demo.html`)
+   - Open the Network URL (e.g., `http://192.168.0.181:3000`)
    - Grant camera permissions
 
 3. **Edit code** on your PC:
@@ -194,7 +194,7 @@ Monitor in browser:
 ### Testing Different Devices
 
 Run dev server once, access from multiple devices:
-- iPhone on `http://192.168.0.181:3000/demo.html`
+- iPhone on `http://192.168.0.181:3000`
 - Android on same URL
 - iPad on same URL
 - All get live updates simultaneously

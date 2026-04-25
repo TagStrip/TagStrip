@@ -75,4 +75,12 @@ describe('CRC verification', () => {
     const valid = verifyCRC(bits, wrongCrc, LONG_TAG.CRC_POLYNOMIAL, LONG_TAG.CRC_BITS);
     expect(valid).toBe(false);
   });
+
+  it('rejects CRC with wrong length', () => {
+    const bits = new Uint8Array([0, 0, 0, 0, 1, 0, 1, 0, 1, 0]); // 42
+    const crc = computeCRC(bits, SHORT_TAG.CRC_POLYNOMIAL, SHORT_TAG.CRC_BITS); // 3 bits
+    const wrongLengthCrc = new Uint8Array([crc[0], crc[1]]); // 2 bits instead of 3
+    const valid = verifyCRC(bits, wrongLengthCrc, SHORT_TAG.CRC_POLYNOMIAL, SHORT_TAG.CRC_BITS);
+    expect(valid).toBe(false);
+  });
 });

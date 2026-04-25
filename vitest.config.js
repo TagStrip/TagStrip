@@ -5,8 +5,9 @@ export default defineConfig({
     environment: 'node',   // core tests run in Node — no DOM needed
     include: ['tests/**/*.test.js'],
     coverage: {
-      provider: 'v8',
-      include: ['src/core/**'],
+      provider: 'istanbul',
+      include: ['src/**'],
+      exclude: ['src/scanner/**'], // Browser-only code, not testable in Node.js
       reporter: ['text', 'html']
     }
   }

@@ -15,6 +15,7 @@ import {
  * @returns {boolean}
  */
 function matchesPattern(bits, startIndex, pattern) {
+  /* istanbul ignore next */ // Defensive check: startIndex is always valid from constants
   if (startIndex + pattern.length > bits.length) {
     return false;
   }
@@ -66,6 +67,7 @@ function bitsToInteger(payloadBits) {
  * @returns {Object|null} - { success: true, variant: 'short', boxId: number } or null
  */
 function decodeShort(bits) {
+  /* istanbul ignore next */ // Unreachable: only called when length matches
   if (bits.length !== SHORT_TAG.TOTAL_BITS) {
     return null;
   }
@@ -113,6 +115,7 @@ function decodeShort(bits) {
  * @returns {Object|null} - { success: true, variant: 'long', boxId: number } or null
  */
 function decodeLong(bits) {
+  /* istanbul ignore next */ // Unreachable: only called when length matches
   if (bits.length !== LONG_TAG.TOTAL_BITS) {
     return null;
   }

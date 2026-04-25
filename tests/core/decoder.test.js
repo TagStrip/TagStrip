@@ -79,10 +79,44 @@ describe('decodeBits — guard pattern validation', () => {
   it('rejects corrupted orientation pattern', () => {
     const str = encode(42, 'short');
     const bits = stringToBits(str);
-    
+
     // Corrupt ORIENT (position 3)
     bits[3] = 1; // Change from 0 to 1
-    
+
+    const result = decodeBits(bits);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects corrupted left guard in long tag', () => {
+    const str = encode(1024, 'long');
+    const bits = stringToBits(str);
+
+    // Corrupt left guard (first bit)
+    bits[0] = 0;
+
+    const result = decodeBits(bits);
+    expect(result.success).toBe(false);
+    expect(result.reason).toBe('NO_GUARD_FOUND');
+  });
+
+  it('rejects corrupted right guard in long tag', () => {
+    const str = encode(1024, 'long');
+    const bits = stringToBits(str);
+
+    // Corrupt right guard (last bit)
+    bits[27] = 0;
+
+    const result = decodeBits(bits);
+    expect(result.success).toBe(false);
+  });
+
+  it('rejects corrupted orientation pattern in long tag', () => {
+    const str = encode(1024, 'long');
+    const bits = stringToBits(str);
+
+    // Corrupt ORIENT (position 3)
+    bits[3] = 0; // Change from 1 to 0
+
     const result = decodeBits(bits);
     expect(result.success).toBe(false);
   });
