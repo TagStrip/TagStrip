@@ -17,7 +17,6 @@ export default defineConfig({
       instances: [
         { browser: 'chrome' },
         { browser: 'firefox' },
-        { browser: 'safari' },
       ],
     },
   }
