@@ -312,11 +312,6 @@
   resolved "https://registry.npmjs.org/@nodable/entities/-/entities-2.1.0.tgz"
   integrity sha512-nyT7T3nbMyBI/lvr6L5TyWbFJAI9FTgVRakNoBqCD+PmID8DzFrrNdLLtHMwMszOtqZa8PAOV24ZqDnQrhQINA==
 
-"@oxc-project/types@=0.127.0":
-  version "0.127.0"
-  resolved "https://registry.npmjs.org/@oxc-project/types/-/types-0.127.0.tgz"
-  integrity sha512-aIYXQBo4lCbO4z0R3FHeucQHpF46l2LbMdxRvqvuRuW2OxdnSkcng5B8+K12spgLDj93rtN3+J2Vac/TIO+ciQ==
-
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"
@@ -346,16 +341,6 @@
     semver "^7.7.4"
     tar-fs "^3.1.1"
     yargs "^17.7.2"
-
-"@rolldown/binding-darwin-arm64@1.0.0-rc.17":
-  version "1.0.0-rc.17"
-  resolved "https://registry.npmjs.org/@rolldown/binding-darwin-arm64/-/binding-darwin-arm64-1.0.0-rc.17.tgz"
-  integrity sha512-4ksWc9n0mhlZpZ9PMZgTGjeOPRu8MB1Z3Tz0Mo02eWfWCHMW1zN82Qz/pL/rC+yQa+8ZnutMF0JjJe7PjwasYw==
-
-"@rolldown/pluginutils@1.0.0-rc.17":
-  version "1.0.0-rc.17"
-  resolved "https://registry.npmjs.org/@rolldown/pluginutils/-/pluginutils-1.0.0-rc.17.tgz"
-  integrity sha512-n8iosDOt6Ig1UhJ2AYqoIhHWh/isz0xpicHTzpKBeotdVsTEcxsSA/i3EVM7gQAj0rU27OLAxCjzlj15IWY7bg==
 
 "@rollup/rollup-darwin-arm64@4.60.2":
   version "4.60.2"
@@ -397,7 +382,7 @@
   dependencies:
     undici-types "~7.19.0"
 
-"@types/node@^18.0.0 || ^20.0.0 || >=22.0.0", "@types/node@^20.0.0 || ^22.0.0 || >=24.0.0", "@types/node@^20.1.0", "@types/node@^20.11.30", "@types/node@^20.19.0 || >=22.12.0":
+"@types/node@^18.0.0 || ^20.0.0 || >=22.0.0", "@types/node@^20.0.0 || ^22.0.0 || >=24.0.0", "@types/node@^20.1.0", "@types/node@^20.11.30":
   version "20.19.39"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.19.39.tgz"
   integrity sha512-orrrD74MBUyK8jOAD/r0+lfa1I2MO6I+vAkmAWzMYbCcgrN4lCrmK52gRFQq/JRxfYPfonkr4b0jcY7Olqdqbw==
@@ -1061,7 +1046,12 @@ decamelize@^1.2.0:
   resolved "https://registry.npmjs.org/decamelize/-/decamelize-1.2.0.tgz"
   integrity sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==
 
-decamelize@^6.0.0, decamelize@^6.0.1:
+decamelize@^6.0.0:
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/decamelize/-/decamelize-6.0.1.tgz"
+  integrity sha512-G7Cqgaelq68XHJNGlZ7lrNQyhZGsFqpwtGFexqUv4IQdjKoSYF7ipZ9UuTJZUSQXFj/XaoBLuEVIVqr8EJngEQ==
+
+decamelize@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/decamelize/-/decamelize-6.0.1.tgz"
   integrity sha512-G7Cqgaelq68XHJNGlZ7lrNQyhZGsFqpwtGFexqUv4IQdjKoSYF7ipZ9UuTJZUSQXFj/XaoBLuEVIVqr8EJngEQ==
@@ -1092,7 +1082,7 @@ degenerator@^5.0.0:
     escodegen "^2.1.0"
     esprima "^4.0.1"
 
-detect-libc@^2.0.3, detect-libc@^2.1.2:
+detect-libc@^2.1.2:
   version "2.1.2"
   resolved "https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz"
   integrity sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==
@@ -1214,7 +1204,7 @@ es6-error@^4.0.1:
   resolved "https://registry.npmjs.org/es6-error/-/es6-error-4.1.1.tgz"
   integrity sha512-Um/+FxMr9CISWh0bi5Zv0iOD+4cFh5qLeks1qhAopKVAJw3drgKbKySikp7wGhDL0HPeaja0P5ULZrxLkniUVg==
 
-esbuild@^0.25.0, "esbuild@^0.27.0 || ^0.28.0":
+esbuild@^0.25.0:
   version "0.25.12"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.25.12.tgz"
   integrity sha512-bbPBYYrtZbkt6Os6FiTLCTFxvq4tt3JKall1vRwshA3fdVztsLAatFaZobhkBC8/BrPetoa0oksYoKXoG4ryJg==
@@ -1447,7 +1437,7 @@ get-uri@^6.0.1:
     data-uri-to-buffer "^6.0.2"
     debug "^4.3.4"
 
-glob@^10.0.0, glob@^10.2.2:
+glob@^10.0.0:
   version "10.5.0"
   resolved "https://registry.npmjs.org/glob/-/glob-10.5.0.tgz"
   integrity sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==
@@ -1459,16 +1449,19 @@ glob@^10.0.0, glob@^10.2.2:
     package-json-from-dist "^1.0.0"
     path-scurry "^1.11.1"
 
-glob@^13.0.3:
-  version "13.0.6"
-  resolved "https://registry.npmjs.org/glob/-/glob-13.0.6.tgz"
-  integrity sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw==
+glob@^10.2.2:
+  version "10.5.0"
+  resolved "https://registry.npmjs.org/glob/-/glob-10.5.0.tgz"
+  integrity sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==
   dependencies:
-    minimatch "^10.2.2"
-    minipass "^7.1.3"
-    path-scurry "^2.0.2"
+    foreground-child "^3.1.0"
+    jackspeak "^3.1.2"
+    minimatch "^9.0.4"
+    minipass "^7.1.2"
+    package-json-from-dist "^1.0.0"
+    path-scurry "^1.11.1"
 
-glob@^13.0.6:
+glob@^13.0.3, glob@^13.0.6:
   version "13.0.6"
   resolved "https://registry.npmjs.org/glob/-/glob-13.0.6.tgz"
   integrity sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw==
@@ -1779,30 +1772,6 @@ lie@~3.3.0:
   dependencies:
     immediate "~3.0.5"
 
-lightningcss-darwin-arm64@1.32.0:
-  version "1.32.0"
-  resolved "https://registry.npmjs.org/lightningcss-darwin-arm64/-/lightningcss-darwin-arm64-1.32.0.tgz"
-  integrity sha512-RzeG9Ju5bag2Bv1/lwlVJvBE3q6TtXskdZLLCyfg5pt+HLz9BqlICO7LZM7VHNTTn/5PRhHFBSjk5lc4cmscPQ==
-
-lightningcss@^1.21.0, lightningcss@^1.32.0:
-  version "1.32.0"
-  resolved "https://registry.npmjs.org/lightningcss/-/lightningcss-1.32.0.tgz"
-  integrity sha512-NXYBzinNrblfraPGyrbPoD19C1h9lfI/1mzgWYvXUTe414Gz/X1FD2XBZSZM7rRTrMA8JL3OtAaGifrIKhQ5yQ==
-  dependencies:
-    detect-libc "^2.0.3"
-  optionalDependencies:
-    lightningcss-android-arm64 "1.32.0"
-    lightningcss-darwin-arm64 "1.32.0"
-    lightningcss-darwin-x64 "1.32.0"
-    lightningcss-freebsd-x64 "1.32.0"
-    lightningcss-linux-arm-gnueabihf "1.32.0"
-    lightningcss-linux-arm64-gnu "1.32.0"
-    lightningcss-linux-arm64-musl "1.32.0"
-    lightningcss-linux-x64-gnu "1.32.0"
-    lightningcss-linux-x64-musl "1.32.0"
-    lightningcss-win32-arm64-msvc "1.32.0"
-    lightningcss-win32-x64-msvc "1.32.0"
-
 locate-app@^2.2.24:
   version "2.5.0"
   resolved "https://registry.npmjs.org/locate-app/-/locate-app-2.5.0.tgz"
@@ -1887,14 +1856,7 @@ magicast@^0.5.2:
     "@babel/types" "^7.29.0"
     source-map-js "^1.2.1"
 
-make-dir@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/make-dir/-/make-dir-3.1.0.tgz"
-  integrity sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==
-  dependencies:
-    semver "^6.0.0"
-
-make-dir@^3.0.2:
+make-dir@^3.0.0, make-dir@^3.0.2:
   version "3.1.0"
   resolved "https://registry.npmjs.org/make-dir/-/make-dir-3.1.0.tgz"
   integrity sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==
@@ -2198,7 +2160,7 @@ pngjs@^7.0.0:
   resolved "https://registry.npmjs.org/pngjs/-/pngjs-7.0.0.tgz"
   integrity sha512-LKWqWJRhstyYo9pGvgor/ivk2w94eSjE3RGVuzLGlr3NmD8bf7RcYGze1mNdEHRP6TRP6rMuDHk5t44hnTRyow==
 
-postcss@^8.5.10, postcss@^8.5.3:
+postcss@^8.5.3:
   version "8.5.10"
   resolved "https://registry.npmjs.org/postcss/-/postcss-8.5.10.tgz"
   integrity sha512-pMMHxBOZKFU6HgAZ4eyGnwXF/EvPGGqUr0MnZ5+99485wwW41kW91A4LOGxSHhgugZmSChL5AlElNdwlNgcnLQ==
@@ -2361,30 +2323,6 @@ rimraf@^6.1.3:
   dependencies:
     glob "^13.0.3"
     package-json-from-dist "^1.0.1"
-
-rolldown@1.0.0-rc.17:
-  version "1.0.0-rc.17"
-  resolved "https://registry.npmjs.org/rolldown/-/rolldown-1.0.0-rc.17.tgz"
-  integrity sha512-ZrT53oAKrtA4+YtBWPQbtPOxIbVDbxT0orcYERKd63VJTF13zPcgXTvD4843L8pcsI7M6MErt8QtON6lrB9tyA==
-  dependencies:
-    "@oxc-project/types" "=0.127.0"
-    "@rolldown/pluginutils" "1.0.0-rc.17"
-  optionalDependencies:
-    "@rolldown/binding-android-arm64" "1.0.0-rc.17"
-    "@rolldown/binding-darwin-arm64" "1.0.0-rc.17"
-    "@rolldown/binding-darwin-x64" "1.0.0-rc.17"
-    "@rolldown/binding-freebsd-x64" "1.0.0-rc.17"
-    "@rolldown/binding-linux-arm-gnueabihf" "1.0.0-rc.17"
-    "@rolldown/binding-linux-arm64-gnu" "1.0.0-rc.17"
-    "@rolldown/binding-linux-arm64-musl" "1.0.0-rc.17"
-    "@rolldown/binding-linux-ppc64-gnu" "1.0.0-rc.17"
-    "@rolldown/binding-linux-s390x-gnu" "1.0.0-rc.17"
-    "@rolldown/binding-linux-x64-gnu" "1.0.0-rc.17"
-    "@rolldown/binding-linux-x64-musl" "1.0.0-rc.17"
-    "@rolldown/binding-openharmony-arm64" "1.0.0-rc.17"
-    "@rolldown/binding-wasm32-wasi" "1.0.0-rc.17"
-    "@rolldown/binding-win32-arm64-msvc" "1.0.0-rc.17"
-    "@rolldown/binding-win32-x64-msvc" "1.0.0-rc.17"
 
 rollup@^4.34.9:
   version "4.60.2"
@@ -2799,7 +2737,7 @@ tinyexec@^1.0.2:
   resolved "https://registry.npmjs.org/tinyexec/-/tinyexec-1.1.1.tgz"
   integrity sha512-VKS/ZaQhhkKFMANmAOhhXVoIfBXblQxGX1myCQ2faQrfmobMftXeJPcZGp0gS07ocvGJWDLZGyOZDadDBqYIJg==
 
-tinyglobby@^0.2.13, tinyglobby@^0.2.15, tinyglobby@^0.2.16:
+tinyglobby@^0.2.13, tinyglobby@^0.2.15:
   version "0.2.16"
   resolved "https://registry.npmjs.org/tinyglobby/-/tinyglobby-0.2.16.tgz"
   integrity sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==
@@ -2848,7 +2786,7 @@ tree-kill@1.2.2:
   resolved "https://registry.npmjs.org/tree-kill/-/tree-kill-1.2.2.tgz"
   integrity sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==
 
-tslib@^2.0.1, tslib@^2.1.0, tslib@^2.4.0:
+tslib@^2.0.1, tslib@^2.1.0:
   version "2.8.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz"
   integrity sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==
