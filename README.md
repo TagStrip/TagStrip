@@ -27,7 +27,7 @@ Each tag contains:
 The CDN provides core encoding/decoding functions:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/tagstrip/tagstrip/dist/tagstrip.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@lelenaic/tagstrip/dist/tagstrip.umd.js"></script>
 
 <script>
   // Encode a box ID into a tag string
