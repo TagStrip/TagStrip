@@ -1,6 +1,9 @@
 {
   "name": "@lelenaic/tagstrip",
   "description": "A library for one-line barcodes-like encoded data made for Dymo",
+  "repository": {
+    "url": "https://github.com/TagStrip/TagStrip"
+  },
   "version": "0.1.2",
   "type": "module",
   "main": "./dist/tagstrip.cjs",
