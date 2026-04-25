@@ -49,14 +49,14 @@ No ML/OCR models are required.
 
 The system uses **two classes of characters** in the printed line:
 
-- **DARK symbol**: a visually dense, high‑ink glyph (e.g. `■` if available in LetraTag symbols, or `#` as a fallback). [labelcity](https://www.labelcity.com/printing-symbols-on-the-dymo-letratag)
+- **DARK symbol**: a visually dense, high‑ink glyph (e.g. `#` if available in LetraTag symbols, or `#` as a fallback). [labelcity](https://www.labelcity.com/printing-symbols-on-the-dymo-letratag)
 - **LIGHT symbol**: a visually much lighter glyph (e.g. `·` or `.`).  
   - A true space character is avoided because LetraTag and its app may collapse or adjust spacing. [dymo](https://www.dymo.com/label-makers-printers/letratag-label-makers/dymo-letratag-200b-bluetooth-label-maker/SP_2607111.html)
 
 The printed code is therefore a string like:
 
 ```text
-■■·■··■■·■■···■
+##·#··##·##···#
 ```
 
 Conceptually:
@@ -77,7 +77,7 @@ The LetraTag code is printed on **one text line**:
 Example:
 
 ```text
-■■·■··■■·■■···■ MY TEXT
+##·#··##·##···# MY TEXT
 ```
 
 - Everything before the first space is the **machine‑coded tag**.  
