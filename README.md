@@ -1,6 +1,6 @@
 # TagStrip
 
-A JavaScript specification and library for encoding and decoding DYMO LetraTag strip codes. TagStrip can both **scan** tags using your device camera and **generate** new tags programmatically.
+A specification and JavaScript library for encoding and decoding DYMO LetraTag strip codes. TagStrip can both **scan** tags using your device camera and **generate** new tags programmatically.
 
 ## Overview
 
